@@ -1,7 +1,4 @@
-# Nintendo data and keys: never commit
-*.wad
-*.bin
-common-key*
+# The channel files in data/ are part of this private project.
 orig/
 .DS_Store
 node_modules/

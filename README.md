@@ -7,9 +7,8 @@ The Wii Forecast Channel, in your browser. A plain HTML + JavaScript (ES modules
 the original channel. No frameworks, no build step: WebGL2 for graphics (the Wii's TEV pipeline translated to GLSL),
 Web Audio for the channel's own music and sound effects, IndexedDB for storage.
 
-> **Bring your own WAD.** This repository contains no Nintendo code, assets or keys. On first visit the page asks for
-> your own copy of the Forecast Channel (USA, `HAFE` v7, `.wad`) and your Wii common key. They are decrypted and
-> stored only in your browser (IndexedDB) and are never uploaded.
+> The channel files (`data/HAFE.wad`, `data/common-key.bin`) are included, so the site starts straight away.
+> Private project — not for release.
 
 ## Any screen, any input
 
