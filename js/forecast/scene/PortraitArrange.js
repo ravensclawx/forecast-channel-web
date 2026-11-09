@@ -59,3 +59,43 @@ export const PortraitArrange = {
         return (LogicalScreen.height - 456) * fraction;
     },
 };
+
+/**
+ * Web: the top button row (the bottom row's art mirrored) fades to a near-white strip at the screen top, which reads
+ * as a white bar against the letterbox. Hold the grey body gradient up to the top edge instead: the pictures of the
+ * given wrappers sample a derived copy of their texture ("<name>#topflat"). The label band by the belt stays.
+ */
+export function flattenTopShine(ctx, ui, names) {
+    const lyt = ctx.lyt;
+    if (!lyt._topFlat) {
+        lyt._topFlat = true;
+        const base = lyt.textureProvider, cache = new Map();
+        lyt.textureProvider = (name) => {
+            if (!name.endsWith('#topflat')) return base(name);
+            if (cache.has(name)) return cache.get(name);
+            const img = base(name.slice(0, -'#topflat'.length));
+            if (!img) return null;
+            const w = img.width, h = img.height, px = new Uint8Array(img.rgba8);
+            // btn art rows (80 tall): 0–1 dark edge, 2–4 highlight, 5–24 light label band (kept — it sits next to the
+            // belt), 25–61 grey gradient lightening to 237 at the screen top, 62–79 white. On the top row the light
+            // end reads as a white bar against the black bar above: hold the grey from row 38 (≈219) to the top.
+            const hold = Math.round(38 * h / 80);
+            for (let y = hold + 1; y < h; y++) px.copyWithin(y * w * 4, hold * w * 4, (hold + 1) * w * 4);
+            const out = { ...img, rgba8: px };
+            cache.set(name, out);
+            return out;
+        };
+    }
+    const layout = ui.layout;
+    const visit = (p) => {
+        const m = p.material;
+        if (m && m.texMaps) {
+            m.texMaps.forEach((tm, slot) => {
+                const n = layout.textureNames[tm.texture];
+                if (n && /^btn\d\.tpl$/.test(n)) m.texturePatternOverride.set(slot, n + '#topflat');
+            });
+        }
+        (p.children ?? []).forEach(visit);
+    };
+    for (const n of names) { const b = ui.pane ? ui.pane(n + 'B') : null; if (b) visit(b); }
+}
