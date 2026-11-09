@@ -2,16 +2,11 @@
 
 ### ▶ [Live demo](https://ravensclawx.github.io/forecast-channel-web/)
 
-
 **forecast-channel-web** by RavensClawX
 
 The Wii Forecast Channel, in your browser. A decompilation-based rebuild of the original channel in plain HTML +
 JavaScript (ES modules). No frameworks, no build step: WebGL2 for graphics (the Wii's TEV pipeline translated to GLSL),
 Web Audio for the channel's own music and sound effects, IndexedDB for the save and forecast cache.
-
-> The channel's assets (decrypted from the Forecast Channel USA v7, `assets/content_<n>.bin`) are included, so the
-> site starts right away — no WAD or key needed. `tools/extract_assets.mjs <wad> <common-key>` regenerates them. If
-> they're missing, the page falls back to asking for your own WAD and key.
 
 ## Controls
 
