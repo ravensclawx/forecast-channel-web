@@ -7,3 +7,5 @@ orig/
 .DS_Store
 node_modules/
 .qa/
+!assets/
+!assets/*.bin

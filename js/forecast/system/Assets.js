@@ -36,6 +36,19 @@ export class Assets {
     this.dolImage = null;
   }
 
+  /** From already-decrypted contents ({index: Uint8Array}) — the site's bundled assets/content_<n>.bin. */
+  static fromContents(contents) {
+    const a = Object.create(Assets.prototype);
+    a.title = {
+      titleIDHex: HAFE_TITLE_ID,
+      content(i) { const c = contents[i]; if (!c) throw RVLError.missing(`content ${i}`); return c; },
+      archive(i) { return new ARCArchive(this.content(i)); },
+    };
+    a.layoutArc = null; a.fontCache = new Map(); a.tplCache = new Map(); a.hbmArcs = new Map();
+    a.sysFont = undefined; a.dolImage = null;
+    return a;
+  }
+
   /** Throws if the key can't decrypt the WAD (content hash check). */
   validate() { this.title.content(Content.mainDol); return true; }
 

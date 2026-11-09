@@ -90,7 +90,19 @@ function toLogical(clientX, clientY) {
 async function boot() {
   sizeCanvas();
   addEventListener('resize', sizeCanvas);
-  const { wad, key } = await loadOrAskFiles();
+  // The channel's assets ship with the site (assets/content_<n>.bin, extracted by tools/extract_assets.mjs).
+  // Fallback: the visitor's own WAD + key (the setup screen) if they're missing.
+  let bundled = null;
+  try {
+    const ids = [1, 6, 7, 8, 9];
+    const rs = await Promise.all(ids.map(i => fetch(`assets/content_${i}.bin`)));
+    if (rs.every(r => r.ok)) {
+      bundled = {};
+      const bufs = await Promise.all(rs.map(r => r.arrayBuffer()));
+      ids.forEach((id, k) => { bundled[id] = new Uint8Array(bufs[k]); });
+    }
+  } catch {}
+  const { wad, key } = bundled ? {} : await loadOrAskFiles();
 
   const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, preserveDrawingBuffer: false, depth: true, stencil: false, premultipliedAlpha: false });
   if (!gl) { showError('This browser does not support WebGL2.'); return; }
@@ -107,7 +119,7 @@ async function boot() {
 
   let assets, ctx, scene, sound = null, cursor = null;
   try {
-    assets = new Assets(wad, key);
+    assets = bundled ? Assets.fromContents(bundled) : new Assets(wad, key);
     if (SoundManager) { try { sound = new SoundManager(assets); } catch (e) { console.warn('SoundManager failed', e); } }
     const gx = new GXWebGL(gl);
     ctx = new SceneContext({ assets, gx, sound, isWide: true });

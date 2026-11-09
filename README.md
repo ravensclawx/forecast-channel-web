@@ -2,7 +2,6 @@
 
 ### ▶ [Live demo](https://ravensclawx.github.io/forecast-channel-web/)
 
-(You'll be asked for your own Forecast Channel WAD and Wii common key; they stay in your browser.)
 
 **forecast-channel-web** by RavensClawX
 
@@ -10,9 +9,9 @@ The Wii Forecast Channel, in your browser. A decompilation-based rebuild of the 
 JavaScript (ES modules). No frameworks, no build step: WebGL2 for graphics (the Wii's TEV pipeline translated to GLSL),
 Web Audio for the channel's own music and sound effects, IndexedDB for the save and forecast cache.
 
-> **Bring your own WAD.** This repository contains no Nintendo code, assets or keys. On first visit the page asks for
-> your own copy of the Forecast Channel (USA, `HAFE` v7, `.wad`) and your Wii common key. They are decrypted and
-> stored only in your browser (IndexedDB) and are never uploaded.
+> The channel's assets (decrypted from the Forecast Channel USA v7, `assets/content_<n>.bin`) are included, so the
+> site starts right away — no WAD or key needed. `tools/extract_assets.mjs <wad> <common-key>` regenerates them. If
+> they're missing, the page falls back to asking for your own WAD and key.
 
 ## Controls
 
