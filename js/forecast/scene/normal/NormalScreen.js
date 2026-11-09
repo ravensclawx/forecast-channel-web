@@ -3,7 +3,7 @@ import { TelopText } from '../../ui/TelopText.js';
 import { PaneCtl, Lang, langSuffix } from '../../ui/PaneCtl.js';
 import { LogicalScreen } from '../../render/LogicalScreen.js';
 import { PortraitSlots } from '../../render/PortraitSlots.js';
-import { PortraitArrange, flattenTopShine } from '../PortraitArrange.js';
+import { PortraitArrange } from '../PortraitArrange.js';
 import { chaseValue } from '../../game/GlobeMath.js';
 import { HubRecord, DOLStrings, UVPage, CurrentPage, DayPage, WeekPage } from './HubPages.js';
 import { WPAD, has, calculate, lytDraw, drawScreenRect } from '../../ui/bridge.js';
@@ -105,7 +105,6 @@ export class NormalScreen {
 
         ctx.startPage = 1;
         if (ctx.isPortrait) this.arrangePortrait();
-        flattenTopShine(ctx, this.forecast, ['blank', 'up', 'set']);   // web: top row = grey gradient, no white shine
         // Pages: page i centred at y = 228 + 456·i (fn_80020F9C).
         this.pages = [new UVPage(this, 'life_nWW.brlyt', 0, 0),
                       new CurrentPage(this, 'day_nWW.brlyt', 1, 1),
