@@ -163,7 +163,8 @@ async function boot() {
     ctx = new SceneContext({ assets, gx, sound, isWide: desktop });
     ctx.pad.smoothPointer = desktop;
     scene = new WeatherScene(ctx);
-    if (desktop && Cursor) { try { cursor = new Cursor(assets, ctx.lyt); } catch (e) { console.warn('Cursor failed', e); } }
+    // Desktop uses the browser's own mouse pointer (no drawn Wii hand), so the pointer is exact — no IR smoothing.
+    ctx.pad.smoothPointer = false;
   } catch (e) { showError('The channel could not start.', e); return; }
 
   // Audio starts on the first user gesture (browser autoplay rules).
@@ -184,7 +185,7 @@ async function boot() {
     // ForecastMac mapping: pointer = mouse, A = left button, B = right button / Esc, +/− = wheel or =/-, d-pad = arrows.
     const track = e => {
       const t = toLogical(e.clientX, e.clientY); pointer = t.p;
-      if (t.inside !== pointerInside) canvas.style.cursor = t.inside && cursor ? 'none' : 'default';
+
       pointerInside = t.inside;
     };
     canvas.addEventListener('pointermove', track);
@@ -254,6 +255,12 @@ async function boot() {
       return;
     }
     scene.calc();
+    // The system pointer becomes a hand over the channel's buttons (and while grabbing the globe).
+    if (desktop) {
+      const c = !pointerInside ? 'default' : scene.cursorState === 'hold' || scene.cursorState === 2 ? 'grabbing'
+        : ctx.ui.hovered ? 'pointer' : (scene.cursorState === 'open' || scene.cursorState === 1) ? 'grab' : 'default';
+      if (canvas.style.cursor !== c) canvas.style.cursor = c;
+    }
     if (sound) sound.update();   // fn_80041F54, once per game frame
   }
   function frame(now) {
