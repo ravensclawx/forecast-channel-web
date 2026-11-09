@@ -4,7 +4,7 @@ import { Lang, langSuffix } from '../../ui/PaneCtl.js';
 import { CursorState } from '../../ui/Cursor.js';
 import { LogicalScreen } from '../../render/LogicalScreen.js';
 import { PortraitSlots } from '../../render/PortraitSlots.js';
-import { PortraitArrange } from '../PortraitArrange.js';
+import { PortraitArrange, flattenTopShine } from '../PortraitArrange.js';
 import { Portrait } from '../normal/NormalScreen.js';
 import { GlobeScene } from '../../game/GlobeScene.js';
 import * as GM from '../../game/GlobeMath.js';
@@ -93,6 +93,7 @@ export class AroundScreen {
         const g = this.belt.pane('beltB');
         if (g) { const keep = 'beltB' + langSuffix(ctx.lang); for (const c of g.children) if (c.name !== keep) c.visible = false; }
         if (LogicalScreen.isPortrait) this.placePortrait();
+        flattenTopShine(ctx, this.around, ['zoom_out', 'next', 'zoom_in']);
     }
 
     get globe() { return this.ctx.globeScene.globe; }
