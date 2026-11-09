@@ -31,11 +31,6 @@ function showError(msg, err) {
 
 // ── First run: the visitor's own WAD + common key ───────────────────────────────────────────────────────────────
 async function loadOrAskFiles() {
-  // The channel files ship with the site (data/). The setup screen below is only a fallback if they're missing.
-  try {
-    const [w, k] = await Promise.all([fetch('data/HAFE.wad'), fetch('data/common-key.bin')]);
-    if (w.ok && k.ok) return { wad: new Uint8Array(await w.arrayBuffer()), key: new Uint8Array(await k.arrayBuffer()) };
-  } catch {}
 
   if (params.get('setup') !== '1') {
     const [wad, key] = await Promise.all([Storage.get('wad'), Storage.get('key')]);
