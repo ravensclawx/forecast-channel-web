@@ -5,26 +5,19 @@
 The Wii Forecast Channel, in your browser. A plain HTML + JavaScript (ES modules) port of
 [forecast-channel-ios](https://github.com/RavensClawX/forecast-channel-ios), itself a decompilation-based rebuild of
 the original channel. No frameworks, no build step: WebGL2 for graphics (the Wii's TEV pipeline translated to GLSL),
-Web Audio for the channel's own music and sound effects, IndexedDB for storage.
+Web Audio for the channel's own music and sound effects, IndexedDB for the save and forecast cache.
 
 > The channel files (`data/HAFE.wad`, `data/common-key.bin`) are included, so the site starts straight away.
 > Private project — not for release.
 
-## Any screen, any input
+## Controls
 
-The layout follows your window, live:
+An authentic port of the original widescreen channel (no HOME Menu). The picture scales to your window with black
+bars; the layout never changes.
 
-- **Wide window** (laptop/desktop, landscape tablet): the original Wii widescreen channel, letterboxed 16:9.
-- **Tall window** (phones, portrait tablets, narrow windows): the iPhone portrait layout, stretched to your screen's
-  own height so phones fill the screen edge to edge.
-- Resize the window or rotate the device and the channel switches layout on the fly.
-
-Input follows whatever you use, at any time: a **mouse** is the Wii Remote (hover, left click = A, right click = B,
-wheel = zoom), **touch** works like the iPhone app (swipe pages, spin the globe, pinch to zoom, two-finger drag to
-tilt, tap a city), and the **keyboard** always works (arrows = d-pad, Enter = A, Esc = B, =/- = zoom). On a first
-visit the browser's location picks your nearest city (decline it to choose from the channel's own lists).
-
-Force a layout with `?layout=wide` or `?layout=tall`; `?setup=1` lets you replace the channel files.
+- Mouse = Wii Remote: the Wii hand cursor, left click = A, right click = B, scroll wheel = +/− (globe zoom).
+- Keyboard: arrows = d-pad, Enter = A, Esc = B, =/- = +/−.
+- "Wii Menu" returns to the hub (there is no Wii Menu in a browser).
 
 ## Run it
 
