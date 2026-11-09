@@ -11,16 +11,21 @@ Web Audio for the channel's own music and sound effects, IndexedDB for storage.
 > your own copy of the Forecast Channel (USA, `HAFE` v7, `.wad`) and your Wii common key. They are decrypted and
 > stored only in your browser (IndexedDB) and are never uploaded.
 
-## Two modes
+## Any screen, any input
 
-- **Mobile** (phones and touch tablets): the iPhone layout, in portrait, letterboxed with black bars. Swipe pages,
-  spin the globe, pinch to zoom, two-finger drag to tilt, tap a city to open it. On a first visit the browser's
-  location picks your nearest city (decline it to choose from the channel's own lists).
-- **Desktop** (mouse, landscape window): the original Wii widescreen channel, letterboxed 16:9, with the Wii hand
-  cursor. Mouse = Wii Remote (left = A, right = B, wheel = +/−), arrow keys = d-pad, Enter = A, Esc = B.
+The layout follows your window, live:
 
-The mode is picked automatically; force one with `?mode=mobile` or `?mode=desktop`. `?setup=1` lets you replace the
-channel files.
+- **Wide window** (laptop/desktop, landscape tablet): the original Wii widescreen channel, letterboxed 16:9.
+- **Tall window** (phones, portrait tablets, narrow windows): the iPhone portrait layout, stretched to your screen's
+  own height so phones fill the screen edge to edge.
+- Resize the window or rotate the device and the channel switches layout on the fly.
+
+Input follows whatever you use, at any time: a **mouse** is the Wii Remote (hover, left click = A, right click = B,
+wheel = zoom), **touch** works like the iPhone app (swipe pages, spin the globe, pinch to zoom, two-finger drag to
+tilt, tap a city), and the **keyboard** always works (arrows = d-pad, Enter = A, Esc = B, =/- = zoom). On a first
+visit the browser's location picks your nearest city (decline it to choose from the channel's own lists).
+
+Force a layout with `?layout=wide` or `?layout=tall`; `?setup=1` lets you replace the channel files.
 
 ## Run it
 

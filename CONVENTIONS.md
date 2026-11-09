@@ -19,7 +19,7 @@ HTML + ES modules + WebGL2 + Web Audio. **No frameworks, no bundler, no build st
 - Logging: no console spam in hot paths.
 
 ## Platform (web) decisions
-- **Two modes, chosen at startup** (`js/main.js`): **mobile** (coarse pointer / narrow screen) = the iPhone portrait
+- **Layout follows the window, live** (wide → widescreen, tall → portrait with the window's own height; see js/main.js). Originally: **two modes, chosen at startup** (`js/main.js`): **mobile** (coarse pointer / narrow screen) = the iPhone portrait
   build below; **desktop** (fine pointer, landscape window) = the original Wii widescreen channel exactly like the Mac
   app (`ForecastMac`): logical 832 × 456 (`isWide = true`, `LogicalScreen.isPortrait = false`, height 456),
   letterboxed 16:9 with black bars, mouse = Wii Remote pointer (left = A, right = B, wheel = +/−, arrow keys =
