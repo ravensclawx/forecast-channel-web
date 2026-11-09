@@ -1,10 +1,13 @@
 # Forecast Channel for the Web
 
+### ▶ [Live demo](https://ravensclawx.github.io/forecast-channel-web/)
+
+(You'll be asked for your own Forecast Channel WAD and Wii common key; they stay in your browser.)
+
 **forecast-channel-web** by RavensClawX
 
-The Wii Forecast Channel, in your browser. A plain HTML + JavaScript (ES modules) port of
-[forecast-channel-ios](https://github.com/RavensClawX/forecast-channel-ios), itself a decompilation-based rebuild of
-the original channel. No frameworks, no build step: WebGL2 for graphics (the Wii's TEV pipeline translated to GLSL),
+The Wii Forecast Channel, in your browser. A decompilation-based rebuild of the original channel in plain HTML +
+JavaScript (ES modules). No frameworks, no build step: WebGL2 for graphics (the Wii's TEV pipeline translated to GLSL),
 Web Audio for the channel's own music and sound effects, IndexedDB for the save and forecast cache.
 
 > **Bring your own WAD.** This repository contains no Nintendo code, assets or keys. On first visit the page asks for
@@ -50,7 +53,7 @@ See `CONVENTIONS.md` for how the Swift sources map to the JavaScript modules.
 
 - Weather data: [Open-Meteo](https://open-meteo.com) (CC BY 4.0). City data: [GeoNames](https://www.geonames.org) (CC BY 4.0).
 - Globe marker ranks from the original channel's city lists, as preserved by RiiConnect24's File-Maker.
-- Built on the reverse-engineering in forecast-channel-ios (decomp-toolkit, m2c, Dolphin as reference).
+- Reverse-engineered with decomp-toolkit and m2c, with Dolphin as the reference.
 
 ## Disclaimer
 

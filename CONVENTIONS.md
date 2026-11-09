@@ -1,6 +1,6 @@
 # forecast-channel-web — porting conventions
 
-A line-by-line JavaScript port of `forecast-channel-ios` (`~/Development/ForecastChannel`, Swift + Metal) to plain
+A line-by-line JavaScript port of `forecast-channel-ios` (Swift + Metal, the earlier native version) to plain
 HTML + ES modules + WebGL2 + Web Audio. **No frameworks, no bundler, no build step**: `index.html` loads
 `js/main.js` as `<script type="module">`; it must run from any static host (and `python3 -m http.server`).
 
