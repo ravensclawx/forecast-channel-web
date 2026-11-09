@@ -14,7 +14,7 @@ An authentic port of the original widescreen channel (no HOME Menu). The picture
 bars; the layout never changes.
 
 - Mouse = Wii Remote: the Wii hand cursor, left click = A, right click = B, scroll wheel = +/− (globe zoom).
-- Keyboard: arrows = d-pad, Enter = A, Esc = B, =/- = +/−.
+- Keyboard: arrows = d-pad, Enter = A, Esc = B, =/- = +/−, F = full screen.
 - "Wii Menu" returns to the hub (there is no Wii Menu in a browser).
 
 ## Run it

@@ -70,22 +70,3 @@ html, body {
   background: #1b2433; border: 1px solid #3a4a66; border-radius: 10px; padding: 16px;
 }
 
-/* Full-screen pill: bottom-right, shown while the mouse moves, hidden when idle. */
-.fs-pill {
-  position: fixed; right: 18px; bottom: 18px; z-index: 5;
-  display: flex; align-items: center; gap: 8px;
-  padding: 9px 16px 9px 13px; border-radius: 999px;
-  background: rgba(0, 0, 0, 0.62); color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; letter-spacing: 0.02em;
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  cursor: pointer; opacity: 0; transform: translateY(6px); pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease, background 0.15s ease;
-}
-.fs-pill.show { opacity: 1; transform: none; pointer-events: auto; }
-.fs-pill:hover { background: rgba(0, 0, 0, 0.82); }
-.fs-pill:focus-visible { outline: 2px solid #5ac8fa; outline-offset: 2px; }
-.fs-pill svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.fs-pill .fs-exit, .fs-pill.on .fs-enter { display: none; }
-.fs-pill.on .fs-exit { display: block; }
-@media (prefers-reduced-motion: reduce) { .fs-pill { transition: none; } }

@@ -220,38 +220,12 @@ async function boot() {
   requestAnimationFrame(t => { last = t; frame(t); });
 }
 
-// ── Full screen: a pill that appears with mouse movement; F toggles too ──────────────────────────────────────
-(() => {
-  const btn = document.getElementById('fullscreen');
-  if (!btn) return;
+// ── Full screen: F toggles ─────────────────────────────────────────────────────────────────────────────────────
+addEventListener('keydown', e => {
+  if ((e.key !== 'f' && e.key !== 'F') || e.metaKey || e.ctrlKey || e.altKey || !setupEl.hidden) return;
   const root = document.documentElement;
-  if (!(root.requestFullscreen || root.webkitRequestFullscreen)) { btn.remove(); return; }
-  const isFS = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
-  const toggle = () => {
-    if (isFS()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    else { const r = (root.requestFullscreen || root.webkitRequestFullscreen).call(root); r?.catch?.(() => {}); }
-  };
-  const sync = () => {
-    const on = isFS();
-    btn.classList.toggle('on', on);
-    btn.querySelector('.fs-label').textContent = on ? 'Exit full screen' : 'Full screen';
-    btn.setAttribute('aria-label', on ? 'Exit full screen' : 'Full screen');
-  };
-  let hideTimer = 0;
-  const show = () => {
-    if (!setupEl.hidden) return;                        // not over the setup screen
-    btn.classList.add('show');
-    clearTimeout(hideTimer);
-    hideTimer = setTimeout(() => { if (!btn.matches(':hover')) btn.classList.remove('show'); }, 2500);
-  };
-  btn.addEventListener('click', e => { e.stopPropagation(); toggle(); });
-  btn.addEventListener('pointerdown', e => e.stopPropagation());
-  btn.addEventListener('mouseleave', show);
-  addEventListener('mousemove', show);
-  addEventListener('keydown', e => { if ((e.key === 'f' || e.key === 'F') && !e.metaKey && !e.ctrlKey && !e.altKey) toggle(); });
-  document.addEventListener('fullscreenchange', sync);
-  document.addEventListener('webkitfullscreenchange', sync);
-  sync();
-})();
+  if (document.fullscreenElement || document.webkitFullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen)?.call(document);
+  else { const r = (root.requestFullscreen || root.webkitRequestFullscreen)?.call(root); r?.catch?.(() => {}); }
+});
 
 boot().catch(e => showError('Startup failed.', e));
