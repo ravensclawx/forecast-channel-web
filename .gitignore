@@ -1,0 +1,8 @@
+# Nintendo data and keys: never commit
+*.wad
+*.bin
+common-key*
+orig/
+.DS_Store
+node_modules/
+.qa/

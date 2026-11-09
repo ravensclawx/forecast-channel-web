@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Forecast Channel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Forecast">
+  <meta name="description" content="The Wii Forecast Channel, ported to the web. Bring your own WAD.">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <canvas id="screen" aria-label="Forecast Channel"></canvas>
+
+  <!-- First run: the visitor supplies their own channel + key. Nothing leaves the browser. -->
+  <section id="setup" hidden>
+    <div class="card">
+      <h1>Forecast Channel</h1>
+      <p class="lead">To start, choose your own copy of the channel. The files stay in this browser and are never uploaded.</p>
+      <label class="file">
+        <span class="label">Forecast Channel WAD</span>
+        <span class="hint">USA, HAFE v7 (.wad)</span>
+        <input id="wad-input" type="file" accept=".wad,application/octet-stream">
+        <span class="chosen" id="wad-name">No file chosen</span>
+      </label>
+      <label class="file">
+        <span class="label">Wii common key</span>
+        <span class="hint">16-byte file (common-key.bin)</span>
+        <input id="key-input" type="file" accept=".bin,application/octet-stream">
+        <span class="chosen" id="key-name">No file chosen</span>
+      </label>
+      <p class="error" id="setup-error" role="alert"></p>
+      <button id="setup-start" type="button" disabled>Start</button>
+    </div>
+  </section>
+
+  <div id="overlay" hidden><pre id="overlay-text"></pre></div>
+  <button id="replace-files" type="button" hidden>Replace channel files</button>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

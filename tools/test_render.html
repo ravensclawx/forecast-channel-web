@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Renderer test</title>
+<style>
+  body { margin: 0; background: #111; color: #ddd; font: 14px system-ui, sans-serif; }
+  header { padding: 10px 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  canvas { display: block; width: 100%; max-width: 1248px; aspect-ratio: 832 / 456; background: #000; margin: 0 auto; }
+  #log { padding: 8px 16px; white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <label>WAD <input type="file" id="wad"></label>
+  <label>Common key <input type="file" id="key"></label>
+  <button id="go">Render</button>
+  <label><input type="checkbox" id="earth" checked> earth</label>
+  <label><input type="checkbox" id="stars" checked> stars</label>
+</header>
+<canvas id="c" width="1664" height="912"></canvas>
+<div id="log"></div>
+<script type="module">
+// Standalone check of track B's renderers: base.brlyt + forecast.brlyt (desktop widescreen, locationAdjust)
+// drawn through LytRenderer into an off-screen SceneFrame, composited to the canvas; earth via G3DRenderer and
+// the star field. Uses the WAD/key from the file inputs, or IndexedDB (Storage keys 'wad' / 'commonKey' / 'key').
+import { Assets } from '../js/forecast/system/Assets.js';
+import { Storage } from '../js/forecast/system/Storage.js';
+import { GXWebGL } from '../js/forecast/render/GXWebGL.js';
+import { LytRenderer } from '../js/forecast/render/LytRenderer.js';
+import { G3DRenderer } from '../js/forecast/render/G3DRenderer.js';
+import { SceneFrame } from '../js/forecast/render/SceneFrame.js';
+import { LogicalScreen } from '../js/forecast/render/LogicalScreen.js';
+import { SceneDraw2D } from '../js/forecast/scene/address/SceneDraw2D.js';
+import { StarField } from '../js/forecast/game/StarField.js';
+import { GlobeCamera } from '../js/forecast/game/GlobeCamera.js';
+
+const log = m => { document.getElementById('log').textContent += m + '\n'; };
+const read = f => f ? f.arrayBuffer().then(b => new Uint8Array(b)) : null;
+
+async function go() {
+    try {
+        let wad = await read(document.getElementById('wad').files[0]);
+        let key = await read(document.getElementById('key').files[0]);
+        if (!wad) wad = await Storage.get('wad');
+        if (!key) key = (await Storage.get('commonKey')) ?? (await Storage.get('key'));
+        if (!wad || !key) { log('choose a WAD and the common key'); return; }
+        const assets = new Assets(new Uint8Array(wad), new Uint8Array(key));
+        LogicalScreen.isPortrait = false; LogicalScreen.height = 456;
+        const W = 832;
+        const canvas = document.getElementById('c');
+        const gl = canvas.getContext('webgl2', { alpha: false, antialias: true });
+        const gx = new GXWebGL(gl);
+        const lyt = new LytRenderer(gx);
+        lyt.textureProvider = n => assets.layoutTexture(n);
+        lyt.fontProvider = n => assets.font(n);
+        const d2 = new SceneDraw2D(gx, lyt, W);
+        const base = assets.layout('base.brlyt'), forecast = assets.layout('forecast.brlyt');
+        const adjust = [1 / 1.3684211, 1];
+        let earth = null, stars = null, cam = null;
+        if (document.getElementById('earth').checked) {
+            earth = new G3DRenderer(gx, assets.earthBRRES(), 'earth');
+            cam = new GlobeCamera(true); cam.dist = 60; cam.initialize([35, -90, 0]); cam.calc();
+        }
+        if (document.getElementById('stars').checked) stars = new StarField(gx, assets);
+        const frame = new SceneFrame(gx);
+        let t = 0;
+        const tick = () => {
+            t++;
+            gx.beginFrame();
+            frame.ensure(canvas.width, canvas.height);
+            const enc = frame.beginScene();
+            if (earth) {
+                if (stars) { stars.update(0, 0); stars.draw(enc, cam.viewMtx, W / 456, 40); }
+                cam.lon = -90 + t * 0.2; cam.calc();
+                const sc = G3DRenderer.Scene();
+                sc.view = cam.viewMtx; sc.projection = cam.projMtx; sc.cameras = { 0: cam.viewMtx };
+                earth.draw(enc, sc);
+            } else {
+                lyt.draw(base, enc, 608, undefined, adjust);
+            }
+            lyt.draw(forecast, enc, 608, undefined, adjust);
+            enc.endEncoding();
+            const out = frame.beginPresent({ originX: 0, originY: 0, width: canvas.width, height: canvas.height });
+            d2.texture(frame.frameTexture, 0, 0, W, 456, [0, 0, 1, 1], 255, out);
+            out.endEncoding();
+            const err = gl.getError(); if (err) log('gl error ' + err);
+            requestAnimationFrame(tick);
+        };
+        tick();
+        log('ok');
+    } catch (e) { log(String(e.stack || e)); console.error(e); }
+}
+document.getElementById('go').onclick = go;
+</script>
+</body>
+</html>
